@@ -1,0 +1,12 @@
+if [ -f "/tmp/.val" ] ; then
+    value=$(cat /tmp/.val)
+else
+    value=0
+fi
+val=$(md5sum /etc/crontab | cut -d " " -f1)
+if [ "$value" != "$val" ] ; then
+	echo "changes were made" | mail -s "Modified" root
+fi
+md5sum /etc/crontab | cut -d " " -f1 > /tmp/.val
+
+#for scheduling 'crontab -e' and '0 0 * * * <path_to_script>'
